@@ -10,6 +10,7 @@ test_script:
       if ($result.Length -gt 0) {
         $result
         Update-AppveyorTest -Name $testName -Outcome Failed -ErrorMessage $result
+        Throw $testName + ' failed'
       } else {        
         Update-AppveyorTest -Name $testName -Outcome Passed
       }      
