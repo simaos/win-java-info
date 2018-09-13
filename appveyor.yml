@@ -2,6 +2,9 @@ install:
   - ps: Install-PackageProvider -Name NuGet -Force
   - ps: Install-Module PsScriptAnalyzer -Force
 build: off
+build_script:
+  - docker version
+  - docker images
 test_script:
   - ps: |
       $testName = "Static Analysis (PSScriptAnalyzer)"
