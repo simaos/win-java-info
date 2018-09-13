@@ -1,4 +1,4 @@
-﻿function Get-FixedDriveName
+function Get-FixedDriveName
 {
     [System.IO.DriveInfo]::GetDrives() |
         Where-Object { $_.DriveType -eq 'Fixed' } |
