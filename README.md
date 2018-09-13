@@ -1,4 +1,4 @@
-![Build Status](https://ci.appveyor.com/api/projects/status/github/simaos)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/simaos/win-java-info)](https://ci.appveyor.com/project/simaos/win-java-info)
 # win-java-info
 Lists JRE and JDK locations, versions and defaults on a Windows system.
 
