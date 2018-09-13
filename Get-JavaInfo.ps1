@@ -2,7 +2,7 @@ function Get-FixedDriveName
 {
     [System.IO.DriveInfo]::GetDrives() |
         Where-Object { $_.DriveType -eq 'Fixed' } |
-        foreach { $_.Name }
+        ForEach-Object { $_.Name }
 }
 
 foreach ($drive in Get-FixedDriveName)
