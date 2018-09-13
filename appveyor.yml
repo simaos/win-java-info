@@ -1,0 +1,7 @@
+install:
+  - ps: Install-PackageProvider -Name NuGet -Force
+  - ps: Install-Module PsScriptAnalyzer -Force
+test_script:
+  - ps: |
+      Add-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Running
+      $Results = Invoke-ScriptAnalyzer -Path $pwd -Recurse
