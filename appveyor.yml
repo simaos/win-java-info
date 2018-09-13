@@ -4,5 +4,12 @@ install:
 build: off
 test_script:
   - ps: |
-      Add-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Running
-      $Results = Invoke-ScriptAnalyzer -Path $pwd -Recurse
+      $testName = "PSScriptAnalyzer"
+      Add-AppveyorTest -Name $testName -Outcome Running
+      $result = Invoke-ScriptAnalyzer -Path $pwd -Recurse | Out-String
+      if ($result.Length -gt 0) {
+        $result
+        Update-AppveyorTest -Name $testName -Outcome Failed -ErrorMessage $result
+      } else {        
+        Update-AppveyorTest -Name $testName -Outcome Passed
+      }      
