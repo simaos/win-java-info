@@ -8,4 +8,8 @@ build_script:
   - docker version
   - docker images
 test_script:
-  - ps: Invoke-Pester
+  - ps: |
+      $results = "TestResults.xml"
+      $uploadUrl = "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"
+      Invoke-Pester -OutputFormat NUnitXml -OutputFile $results
+      (New-Object 'System.Net.WebClient').UploadFile($uploadUrl, $results)
