@@ -1,20 +1,11 @@
 image: Visual Studio 2017
 install:
   - ps: Install-PackageProvider -Name NuGet -Force
-  - ps: Install-Module PsScriptAnalyzer -Force
+  - ps: Install-Module -Name PsScriptAnalyzer -Force
+  - ps: Install-Module -Name Pester -Force
 build: off
 build_script:
   - docker version
   - docker images
 test_script:
-  - ps: |
-      $testName = "Static Analysis (PSScriptAnalyzer)"
-      Add-AppveyorTest -Name $testName -Outcome Running
-      $result = Invoke-ScriptAnalyzer -Path $pwd -Recurse | Out-String
-      if ($result.Length -gt 0) {
-        $result
-        Update-AppveyorTest -Name $testName -Outcome Failed -ErrorMessage $result
-        Throw 'Build Failed because ' + $testName + ' failed'
-      } else {        
-        Update-AppveyorTest -Name $testName -Outcome Passed
-      }      
+  - ps: Invoke-Pester
