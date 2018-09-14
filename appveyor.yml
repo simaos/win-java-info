@@ -5,6 +5,7 @@ install:
   - ps: Install-Module -Name Pester -Force -SkipPublisherCheck
 build: off
 build_script:
+  - ps: "APPVEYOR_JOB_ID is $env:APPVERYOR_JOB_ID"
   - docker version
   - docker images
 test_script:
