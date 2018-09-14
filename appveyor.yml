@@ -2,7 +2,7 @@ image: Visual Studio 2017
 install:
   - ps: Install-PackageProvider -Name NuGet -Force
   - ps: Install-Module -Name PsScriptAnalyzer -Force
-  - ps: Install-Module -Name Pester -Force
+  - ps: Install-Module -Name Pester -Force -SkipPublisherCheck
 build: off
 build_script:
   - docker version
