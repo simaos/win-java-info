@@ -42,7 +42,7 @@ function Invoke-StaticAnalysis
     $result
     if ($result.Length -gt 0)
     {
-        throw "Found $($result.Length) static analysis issues"
+        throw "Build failed. Found $($result.Length) static analysis issue(s)"
     }
     else
     {
