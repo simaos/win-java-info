@@ -17,14 +17,21 @@ function Use-AdministratorContext
     }
 }
 
-function Install-BuildPrerequisite()
+function Install-BuildPrerequisite
 {
     foreach ($arg in $args)
     {
+        Write-Output "Checking build prerequisite module $arg"
         if (-not (Get-Module -Name $arg))
         {
+            Write-Output "Requesting elevated permissions to install build prerequisite module $arg"
             Use-AdministratorContext
-            Get-Module -Name $arg -Force -SkipPublisherCheck
+            Write-Output "Installing build prerequisite module $arg"
+            Install-Module -Name $arg -Force -SkipPublisherCheck
+        }
+        else
+        {
+            Write-Output "Confirmed already installed build prerequisite module $arg"
         }
     }
 }
@@ -35,7 +42,7 @@ function Invoke-StaticAnalysis
     $result
     if ($result.Length -gt 0)
     {
-        Stop-Build "Found $($result.Length) static analysis issues"
+        throw "Found $($result.Length) static analysis issues"
     }
     else
     {
@@ -46,11 +53,11 @@ function Invoke-Build
 {
     if ($AppVeyor)  
     {
-        Write-Output "Building in AppVeyor build server context"
+        Write-Output "Building in AppVeyor build CI server context"
     }
     else
     {
-        Write-Output "Building in developer context"
+        Write-Output "Building in normal context"
     }
     Write-Output "Checking static analysis findings"
     Invoke-StaticAnalysis
@@ -74,5 +81,6 @@ function Invoke-Test
 }
 
 Write-Output "Build starting"
+Install-BuildPrerequisite "PSScriptAnalyzer" "Pester"
 Invoke-Build
 Write-Output "Build complete"
