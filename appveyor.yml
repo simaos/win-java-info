@@ -1,15 +1,3 @@
 image: Visual Studio 2017
-install:
-  - ps: Install-PackageProvider -Name NuGet -Force
-  - ps: Install-Module -Name PsScriptAnalyzer -Force
-  - ps: Install-Module -Name Pester -Force -SkipPublisherCheck
 build: off
-build_script:
-  - docker version
-  - docker images
-test_script:
-  - ps: |
-      $results = ".\TestResults.xml"
-      $url = "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"
-      $numberOfFails = Invoke-Pester -EnableExit -OutputFormat NUnitXml -OutputFile $results
-      (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $results))
+build_script: .\Build.ps1 -AppVeyor
