@@ -13,4 +13,3 @@ test_script:
       $url = "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"
       $numberOfFails = Invoke-Pester -EnableExit -OutputFormat NUnitXml -OutputFile $results
       (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $results))
-      if ($numberOfFails -gt 0) { throw }
