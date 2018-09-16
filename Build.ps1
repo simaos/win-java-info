@@ -1,4 +1,4 @@
-param([switch]$appVeyor=$false)
+param([switch]$AppVeyor=$false)
 
 function Confirm-AdministratorContext
 {
@@ -39,39 +39,40 @@ function Invoke-StaticAnalysis
     }
     else
     {
-        Write-Output "Static analysis finding clean"
+        Write-Output "Static analysis findings clean"
     }
 }
 function Invoke-Build
 {
-    if ($appVeyor)
+    if ($AppVeyor)  
     {
-        Write-Output "Running build in AppVeyor build server context"
+        Write-Output "Building in AppVeyor build server context"
     }
     else
     {
-        Write-Output "Running build in developer context"
+        Write-Output "Building in developer context"
     }
     Write-Output "Checking static analysis findings"
     Invoke-StaticAnalysis
     Write-Output "Running tests"
     Invoke-Test
-    Write-Output "Build finished"
 }
 
 function Send-TestResult([string]$resultsPath)
 {
-    $url = "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"
+    $url = "https://ci.AppVeyor.com/api/testresults/nunit/$($env:AppVeyor_JOB_ID)"
     (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $resultsPath))
 }
 function Invoke-Test
 {
     $resultsPath = ".\TestResults.xml"
     Invoke-Pester -EnableExit -OutputFormat NUnitXml -OutputFile $resultsPath
-    if ($appVeyor)
+    if ($AppVeyor)
     {
         Send-TestResult $resultsPath
     }
 }
 
+Write-Output "Build starting"
 Invoke-Build
+Write-Output "Build complete"
