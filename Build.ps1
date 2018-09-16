@@ -39,15 +39,24 @@ function Invoke-StaticAnalysis
     }
     else
     {
-        "Static analysis finding clean"
+        Write-Output "Static analysis finding clean"
     }
 }
 function Invoke-Build
 {
-    "Checking static analysis findings"
+    if ($appVeyor)
+    {
+        Write-Output "Running build in AppVeyor build server context"
+    }
+    else
+    {
+        Write-Output "Running build in developer context"
+    }
+    Write-Output "Checking static analysis findings"
     Invoke-StaticAnalysis
-    "Running tests"
+    Write-Output "Running tests"
     Invoke-Test
+    Write-Output "Build finished"
 }
 
 function Send-TestResult([string]$resultsPath)
@@ -61,7 +70,7 @@ function Invoke-Test
     Invoke-Pester -EnableExit -OutputFormat NUnitXml -OutputFile $resultsPath
     if ($appVeyor)
     {
-        Send-TestResults $resultsPath
+        Send-TestResult $resultsPath
     }
 }
 
