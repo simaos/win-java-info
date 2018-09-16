@@ -9,8 +9,9 @@ build_script:
   - docker images
 test_script:
   - ps: |
-      $results = Resolve-Path .\TestResults.xml
+      $results = ".\TestResults.xml"
       $url = "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"
       Invoke-Pester -OutputFormat NUnitXml -OutputFile $results
-      Write-Host 'Uploading Pester test results ' + $results + ' to ' + $url
-      (New-Object 'System.Net.WebClient').UploadFile($uploadUrl, $results)
+      $path = Resolve-Path $results
+      Write-Host 'Uploading Pester test results from ' + $path + ' to ' + $url
+      (New-Object 'System.Net.WebClient').UploadFile($url, $path)
