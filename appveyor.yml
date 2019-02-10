@@ -1,5 +1,5 @@
 image: Visual Studio 2017
 build: off
 build_script:
-  - cmd: docker pull simaos/nanopsbuild
+  - cmd: docker pull simaos/corepsbuild
   - ps: .\Invoke-Build.ps1 -AppVeyor
