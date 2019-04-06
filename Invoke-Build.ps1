@@ -5,7 +5,7 @@ function Confirm-BuildEnvironment{
     Param(  [Parameter(mandatory=$true)][string]$ModuleName,
             [Parameter(mandatory=$true)][string]$CommandName)
     Write-Output "Is module '$ModuleName' available?"
-    Write-Output "  (check by looking for command '$CommandName'"
+    Write-Output "  (check by looking for command '$CommandName')"
     if ((Get-Command | Where-Object {$_.Name -eq "$CommandName"}).Length -eq 0)
     {
         Write-Output "Cannot find command '$CommandName'"
